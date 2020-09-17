@@ -9,9 +9,13 @@ const baseURL = 'https://api.dictionaryapi.dev/api/v2/entries/en/'
 
 const getData = async (array) => {
 	array.forEach(async (word) => {
-		const result = await axios.get(baseURL + word)
-		const definition = result.data[0].meanings[0].definitions[0].definition
-		console.log('\n' + definition + '\n')
+		try {
+			const result = await axios.get(baseURL + word)
+			const definition = result.data[0].meanings[0].definitions[0].definition
+			console.log('\n' + word + ' | ' + definition + '\n')
+		} catch (err) {
+			console.log('\nError in fetching the definition for: ' + word + '\n')
+		}
 	})
 }
 
