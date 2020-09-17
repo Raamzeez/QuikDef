@@ -1,4 +1,5 @@
 const axios = require('axios')
+const fs = require('fs')
 const readline = require('readline')
 const rl = readline.createInterface({
 	input: process.stdin,
@@ -7,14 +8,25 @@ const rl = readline.createInterface({
 
 const baseURL = 'https://api.dictionaryapi.dev/api/v2/entries/en/'
 
-const getData = async (array) => {
+const operate = async (array, write) => {
 	array.forEach(async (word) => {
+		const updatedWord = word.charAt(0).toUpperCase() + word.slice(1)
 		try {
 			const result = await axios.get(baseURL + word)
 			const definition = result.data[0].meanings[0].definitions[0].definition
-			console.log('\n' + word + ' | ' + definition + '\n')
+			const string = `\n${updatedWord}: ${definition}\n`
+			if (write === 'y') {
+				fs.appendFile('definitions.txt', string, () => {
+					console.log(string)
+				})
+			}
 		} catch (err) {
-			console.log('\nError in fetching the definition for: ' + word + '\n')
+			const errorString = `\nError in retrieving the definition of the word: ${updatedWord}\n`
+			if (write === 'y') {
+				fs.appendFile('definitions.txt', errorString, () => {
+					console.log(errorString)
+				})
+			}
 		}
 	})
 }
@@ -23,6 +35,11 @@ rl.question(
 	'Input all the words you want the definition of with a comma and space separating each word: ',
 	(rawWords) => {
 		const words = rawWords.split(', ')
-		getData(words)
+		rl.question(
+			'Do you want to write the definitions in a file? (y/n) ',
+			(writeToFile) => {
+				operate(words, writeToFile)
+			}
+		)
 	}
 )
