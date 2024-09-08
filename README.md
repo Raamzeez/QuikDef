@@ -12,8 +12,8 @@
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/quikdef.git
-   cd quikdef
+   git clone https://github.com/Raamzeez/QuikDef.git
+   cd QuikDef
    
 2. Install the dependencies:
   ```bash
