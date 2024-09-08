@@ -22,7 +22,7 @@
 
 3. Run the program:
   ```bash
-  node quikdef.js
+  node index.js
   ```
 ## Usage
 Choose between typing the words or reading them from a file:
